@@ -1,4 +1,4 @@
-import pygame, math
+import pygame, math, ctypes
 from pygame.locals import *
 
 #Car Sprite Class
@@ -12,6 +12,8 @@ class CarSprite(pygame.sprite.Sprite):
         self.position = position
         self.speed = self.direction = 0
         self.k_left = self.k_right = self.k_down = self.k_up = 0
+
+
 
     def update(self, deltat):
         #Simulation
@@ -53,3 +55,10 @@ def CarMovement(car, car2):
     if (car2.speed != 0):
         if car2.speed > 0: car2.speed -= 0.5
         elif car2.speed < 0: car2.speed += 0.5
+
+def CheckCollision(car1, car2):
+    collide = pygame.sprite.collide_rect(car1, car2)
+    if collide:
+        ctypes.windll.user32.MessageBoxA(0, "Your cars are WRECKED!", "Game Over.", 0)
+        sys.exit()
+
