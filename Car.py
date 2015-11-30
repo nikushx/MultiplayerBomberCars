@@ -56,9 +56,20 @@ def CarMovement(car, car2):
         if car2.speed > 0: car2.speed -= 0.5
         elif car2.speed < 0: car2.speed += 0.5
 
-def CheckCollision(car1, car2):
-    collide = pygame.sprite.collide_rect(car1, car2)
-    if collide:
-        ctypes.windll.user32.MessageBoxA(0, "Your cars are WRECKED!", "Game Over.", 0)
-        sys.exit()
-
+def CheckCollision(car1, car2, walls, safe_position_1, safe_position_2):
+    car_collide = pygame.sprite.collide_rect(car1, car2)
+    hit1 = False
+    hit2 = False
+    for wall in walls:
+        wall_collide_1 = pygame.sprite.collide_rect(car1, wall)
+        if wall_collide_1: hit1 = True
+        wall_collide_2 = pygame.sprite.collide_rect(car2, wall)
+        if wall_collide_2: hit2 = True
+    if car_collide: print "Car Collision"
+    if hit1 == False: safe_position_1 = car1.position
+    if hit1 == True:
+        car1.position = safe_position_1
+    if hit2 == False: safe_position_2 = car2.position
+    if hit2 == True:
+        car2.position = safe_position_2
+    return (safe_position_1, safe_position_2)
