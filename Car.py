@@ -1,5 +1,7 @@
-import pygame, math, ctypes
+import pygame, math, ctypes, sys, Bomb
 from pygame.locals import *
+
+car_bomb = []
 
 #Car Sprite Class
 class CarSprite(pygame.sprite.Sprite):
@@ -32,7 +34,16 @@ class CarSprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = self.position
 
-def CarMovement(car, car2):
+#Spawn Bomb
+def SpawnBomb(car_pos, screen):
+    car_bomb.append(Bomb.BombSprite("bomb.png", car_pos))
+
+def DisplayBomb(screen):
+    bomb_group = pygame.sprite.RenderPlain(car_bomb)
+    bomb_group.draw(screen)
+
+def CarMovement(car, car2, screen):
+
 
     #User input
     for event in pygame.event.get():
@@ -44,17 +55,21 @@ def CarMovement(car, car2):
         elif event.key == K_DOWN: car.k_down = down * -2
         if event.key == K_RIGHT: car.k_right = down * -5
         if event.key == K_LEFT: car.k_left = down * 5
+        if event.key == K_f and down == False: SpawnBomb(car.position, screen)
         #Car 2
         if event.key == K_w: car2.k_up = down * 2
         elif event.key == K_s: car2.k_down = down * -2
         if event.key == K_d: car2.k_right = down * -5
         if event.key == K_a: car2.k_left = down * 5
+        if event.key == K_g: SpawnBomb(car2.position, screen)
+
     if (car.speed != 0):
         if car.speed > 0: car.speed -= 0.5
         elif car.speed < 0: car.speed += 0.5
     if (car2.speed != 0):
         if car2.speed > 0: car2.speed -= 0.5
         elif car2.speed < 0: car2.speed += 0.5
+
 
 def CheckCollision(car1, car2, walls, safe_position_1, safe_position_2):
     car_collide = pygame.sprite.collide_rect(car1, car2)

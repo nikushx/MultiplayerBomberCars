@@ -92,6 +92,9 @@ walls = [
 ]
 wall_group = pygame.sprite.RenderPlain(walls)
 
+#Set Spawn of Bombs
+
+
 #Loop
 while 1:
 
@@ -103,12 +106,13 @@ while 1:
     safe_position_1, safe_position_2 = Car.CheckCollision(car_one, car_two, walls, safe_position_1, safe_position_2)
 
     #User Input
-    Car.CarMovement(car_one, car_two)
+    Car.CarMovement(car_one, car_two, screen)
 
     #Render Screen
     screen.fill((0,0,0))
     wall_group.draw(screen)
     car_group.draw(screen)
+    Car.DisplayBomb(screen)
 
     #Display Game
     pygame.display.flip()
